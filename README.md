@@ -38,7 +38,7 @@ server {
         ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE;
         ssl_prefer_server_ciphers on;
 
-        # proxy to wordpress
+        # proxy to ShortURL
         location / {
             proxy_pass https://127.0.0.1:8004;
 
