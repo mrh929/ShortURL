@@ -18,7 +18,7 @@ services:
      SRV_PROTO: "https"
      SRV_BASE_PATH: "m1ku.in/s"
      SQL_ROOT_PASSWD: "test"
-     SQL_HOST: "db" # necessary 
+     SQL_HOST: "db"
      SQL_PORT: 3306
      SQL_DATABASE_NAME: "db"
 

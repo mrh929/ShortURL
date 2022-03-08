@@ -9,7 +9,7 @@ import (
 )
 
 func dbInit() (err error) {
-	fmt.Println("dbInit...")
+	log.Info("dbInit...")
 
 	sqlSrvURL := fmt.Sprintf("root:%s@tcp(%s:%s)/", SQL_ROOT_PASSWD, SQL_HOST, SQL_PORT)
 
@@ -38,7 +38,7 @@ func dbInit() (err error) {
 	if err != nil {
 		return
 	}
-	fmt.Println("dbInit finished")
+	log.Info("dbInit finished")
 	return
 }
 
@@ -54,8 +54,6 @@ func urlSelect(s_key string) (r_url string, err error) {
 		if err != nil {
 			return
 		}
-		log.Println(s_key, r_url)
-		return
 	}
 	err = rows.Err()
 	r_url = ""

@@ -26,7 +26,7 @@ var SQL_DATABASE_NAME string
 func main() {
 	allInit()
 
-	fmt.Println("Serving Short URLs...")
+	log.Info("Serving Short URLs...")
 	router := mux.NewRouter()
 	router.HandleFunc("/", homeHandler) // add handlers
 	router.HandleFunc("/shorten", shortenHandler)
