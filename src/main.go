@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
@@ -15,6 +16,8 @@ var log = logrus.New()
 var SRV_PASSWD string
 var SRV_HOST string
 var SRV_PORT string
+var SRV_PROTO string
+var SRV_BASE_PATH string
 var SQL_ROOT_PASSWD string
 var SQL_HOST string
 var SQL_PORT string
@@ -56,6 +59,16 @@ func envSet() {
 	if SRV_PORT == "" {
 		SRV_PORT = "8000"
 	}
+
+	SRV_PROTO = os.Getenv("SRV_PROTO") // init client access protocal
+	if SRV_PROTO == "" {
+		SRV_PROTO = "http"
+	} else if SRV_PROTO != "https" && SRV_PROTO != "http" {
+		log.Fatal("server protocol not supported")
+	}
+
+	SRV_BASE_PATH = os.Getenv("SRV_BASE_PATH") // init client access protocal
+	SRV_BASE_PATH = strings.TrimRight(SRV_BASE_PATH, "/")
 
 	SQL_ROOT_PASSWD = os.Getenv("SQL_ROOT_PASSWD") // init sql root password
 	if SQL_ROOT_PASSWD == "" {

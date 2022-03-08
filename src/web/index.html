@@ -2,22 +2,20 @@
 <html>
 
 <body>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-    <h2>Short URL generator</h2>
-
-    <h3 id="result">https://exam.ple</h3>
-
-    <form id="myform" action="/shorten" method="post">
-        <label for="url">URL to be shortened:</label><br>
-        <input type="text" id="url" name="url" value="" required="required"><br>
-        <label for="key">Passwd:</label><br>
-        <input type="password" id="passwd" name="passwd" value="" required="required"><br><br>
-        <input type="submit" value="Submit">
-    </form>
-    <label id="status"></label><br>
-
+    <div id="jz">
+        <h2>Short URL generator</h2>
+        <h3 id="result">https://exam.ple</h3>
+        <form id="myform" action="/shorten" method="post">
+            <label for="url">URL to be shortened:</label><br>
+            <input type="text" id="url" name="url" value="" required="required"><br>
+            <label for="passwd">Passwd:</label><br>
+            <input type="password" id="passwd" name="passwd" value="" required="required"><br><br>
+            <input type="submit" value="Submit">
+        </form>
+        <label id="status"></label><br>
+    </div>
 
     <script type="text/javascript">
         $("#myform").submit(function (event) {
@@ -54,4 +52,5 @@
 
 
 </body>
+
 </html>

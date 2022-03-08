@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"path"
 
@@ -77,9 +78,26 @@ func shortenHandler(w http.ResponseWriter, r *http.Request) { // handle shorten 
 			}
 		}
 
+		var protocol string
+		var base_path string
+
+		_, ok := r.Header["X-Forwarded-Proto"]
+		if ok { // decide http or https
+			protocol = r.Header["X-Forwarded-Proto"][0]
+		} else {
+			protocol = SRV_PROTO
+		}
+
+		if SRV_BASE_PATH != "" { // decide base path
+			base_path = SRV_BASE_PATH
+		} else {
+			base_path = r.Host
+		}
+
+		m["url"] = fmt.Sprintf("%s://%s/%s", protocol, base_path, s_key)
 		m["status"] = "success"
-		m["url"] = r.Host + "/" + s_key
 		m["reason"] = "success"
+
 		json, _ := json.Marshal(m)
 		w.Header().Set("Content-Type", "application/json")
 		w.Write(json)
