@@ -13,7 +13,7 @@ services:
 
     environment:
      SRV_PASSWD: "114514!"
-     SRV_HOST: "127.0.0.1"
+     SRV_HOST: "0.0.0.0"
      SRV_PORT: "8000"
      SRV_PROTO: "https"
      SRV_BASE_PATH: "m1ku.in/s"
