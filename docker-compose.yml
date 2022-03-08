@@ -1,0 +1,35 @@
+version: '3'
+services:
+  web:
+    build:
+      context: ./docker/web
+      dockerfile: Dockerfile
+
+    ports:
+      - "8004:8000" # http
+      # - "443:443" # https
+    links:
+      - db
+
+    environment:
+     SRV_PASSWD: "114514!"
+     SRV_HOST: "127.0.0.1"
+     SRV_PORT: "8000"
+     SRV_PROTO: "https"
+     SRV_BASE_PATH: "m1ku.in/s"
+     SQL_ROOT_PASSWD: "test"
+     SQL_HOST: "db" # necessary 
+     SQL_PORT: 3306
+     SQL_DATABASE_NAME: "db"
+
+    volumes:
+      - ./src:/src
+  db:
+    image: mariadb:latest
+    environment:
+      MYSQL_USER: "test"
+      MYSQL_PASSWORD: "test"
+      MYSQL_ROOT_PASSWORD: "test"
+      MYSQL_DATABASE: "test"
+    volumes:
+      - ./data:/var/lib/mysql
