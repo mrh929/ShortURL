@@ -12,15 +12,16 @@ services:
       - db
 
     environment:
-     SRV_PASSWD: "114514!"
-     SRV_HOST: "0.0.0.0"
-     SRV_PORT: "8000"
-     SRV_PROTO: "https"
-     SRV_BASE_PATH: "m1ku.in/s"
-     SQL_ROOT_PASSWD: "test"
-     SQL_HOST: "db"
-     SQL_PORT: 3306
-     SQL_DATABASE_NAME: "db"
+      SRV_PASSWD: "114514!" 
+      SRV_PROTO: "https" 
+      SRV_BASE_PATH: "m1ku.in/s" 
+      SQL_ROOT_PASSWD: "test" # used to access database
+      SQL_HOST: "db" # used to connect to another sql docker
+
+      # SRV_HOST: "0.0.0.0" # internal listen ip
+      # SRV_PORT: "8000"  # internal http port
+      # SQL_PORT: 3306  # internal sql port
+      # SQL_DATABASE_NAME: "db" # internal sql database name
 
     volumes:
       - ./src:/src
