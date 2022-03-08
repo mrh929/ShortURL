@@ -29,7 +29,7 @@ Notice that the header **X-Forwarded-Proto** is necessary if you want to set up 
 ```nginx
 server {
         listen 443 ssl;
-        server_name m1ku.in;
+        server_name your_domain;
 
         ssl_certificate /etc/letsencrypt/live/your_domain/fullchain.pem;
         ssl_certificate_key /etc/letsencrypt/live/your_domain/privkey.pem;
