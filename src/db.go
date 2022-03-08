@@ -56,7 +56,6 @@ func urlSelect(s_key string) (r_url string, err error) {
 		}
 	}
 	err = rows.Err()
-	r_url = ""
 	rows.Close()
 	return
 }

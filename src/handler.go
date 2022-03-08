@@ -99,10 +99,11 @@ func shortenHandler(w http.ResponseWriter, r *http.Request) { // handle shorten 
 		m["url"] = fmt.Sprintf("%s://%s/%s", protocol, base_path, s_key)
 		m["status"] = "success"
 		m["reason"] = "success"
-
 		json, _ := json.Marshal(m)
 		w.Header().Set("Content-Type", "application/json")
 		w.Write(json)
+
+		log.Info(s_key, "----->", r_url)
 		// fmt.Fprintf(w, s_url)
 		return
 	}
