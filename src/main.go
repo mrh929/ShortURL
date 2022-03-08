@@ -60,14 +60,14 @@ func envSet() {
 		SRV_PORT = "8000"
 	}
 
-	SRV_PROTO = os.Getenv("SRV_PROTO") // init client access protocal
+	SRV_PROTO = os.Getenv("SRV_PROTO") // init client access protocal (e.g. http/https)
 	if SRV_PROTO == "" {
 		SRV_PROTO = "http"
 	} else if SRV_PROTO != "https" && SRV_PROTO != "http" {
 		log.Fatal("server protocol not supported")
 	}
 
-	SRV_BASE_PATH = os.Getenv("SRV_BASE_PATH") // init client access protocal
+	SRV_BASE_PATH = os.Getenv("SRV_BASE_PATH") // init url base path (e.g. exam.ple/foo/bar/ABCDE)
 	SRV_BASE_PATH = strings.TrimRight(SRV_BASE_PATH, "/")
 
 	SQL_ROOT_PASSWD = os.Getenv("SQL_ROOT_PASSWD") // init sql root password

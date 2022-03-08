@@ -25,8 +25,8 @@ func shortenHandler(w http.ResponseWriter, r *http.Request) { // handle shorten 
 	passwd := r.PostFormValue("passwd")
 
 	m := make(map[string]string)
-	if passwd == "" && url == "" { // if an empty request, just redirect
-		http.Redirect(w, r, "http://"+r.Host, http.StatusTemporaryRedirect)
+	if passwd == "" || url == "" { // if an empty request, just redirect
+		http.Error(w, "url or passwd cannot be empty", http.StatusBadRequest)
 		return
 	} else if passwd != SRV_PASSWD { // validate password
 		m["status"] = "failed"
@@ -36,6 +36,8 @@ func shortenHandler(w http.ResponseWriter, r *http.Request) { // handle shorten 
 		json, _ := json.Marshal(m)
 		w.Header().Set("Content-Type", "application/json")
 		w.Write(json)
+		log.Info("wrong password")
+		return
 	} else {
 		r_url, err := parseRawURL(url) // convert url to standard url
 		if err != nil {
