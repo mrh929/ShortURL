@@ -53,7 +53,7 @@ func envSet() {
 
 	SRV_HOST = os.Getenv("SRV_HOST") // init server host
 	if SRV_HOST == "" {
-		SRV_HOST = "127.0.0.1"
+		SRV_HOST = "0.0.0.0"
 	}
 	log.Info("SRV_HOST = ", SRV_HOST)
 

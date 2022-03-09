@@ -6,30 +6,23 @@ services:
       dockerfile: Dockerfile
 
     ports:
-      - "8004:8000" # http
-      # - "443:443" # https
+      - "8000:8000" # http
     links:
       - db
 
     environment:
-      SRV_PASSWD: "114514!" 
-      SRV_PROTO: "https" 
-      SRV_BASE_PATH: "m1ku.in/s" 
+      SRV_PASSWD: "123456!"
+      SRV_PROTO: "http"
       SQL_ROOT_PASSWD: "test" # used to access database
       SQL_HOST: "db" # used to connect to another sql docker
-      SRV_HOST: "0.0.0.0" # internal listen ip
-      
-      # SRV_PORT: "8000"  # internal http port
-      # SQL_PORT: 3306  # internal sql port
-      # SQL_DATABASE_NAME: "db" # internal sql database name
+
+      # SRV_BASE_PATH: "exam.ple/foo/bar"
 
     volumes:
       - ./src:/src
   db:
     image: mariadb:latest
     environment:
-      MYSQL_USER: "test"
-      MYSQL_PASSWORD: "test"
       MYSQL_ROOT_PASSWORD: "test"
       MYSQL_DATABASE: "test"
     volumes:

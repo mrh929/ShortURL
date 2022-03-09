@@ -6,7 +6,7 @@ Aims to write a self-hosted URL Shortener like [URL Shortener (shorturl.at)](htt
 
 ### example
 
-Access this page through https://m1ku.in/s/8xCjG .
+https://m1ku.in/s/PGMDr
 
 ## Run
 
@@ -19,6 +19,20 @@ docker-compose up -d
 ```
 
 Then you can access server using **http port** (https need to set up nginx which will be discussed later).
+
+### env
+
+| Name              | Type   | Description                                                                          |
+| ----------------- | ------ | ------------------------------------------------------------------------------------ |
+| **SRV_PASSWD**    | string | User need to type password to access this web app.                                   |
+| SRV_HOST          | string | IP that **web app** listens to. **Default: 0.0.0.0**                                 |
+| SRV_PORT          | string | Port that **web app** listens to. **Default: 8000**                                  |
+| SRV_PROTO         | string | Generated link protocal. **Default: http**                                           |
+| SRV_BASE_PATH     | string | Generated link base path. If empty, this will be set to the value of header['HOST']. |
+| SQL_ROOT_PASSWD   | string | Password to access mysql. **Default: test**                                          |
+| SQL_HOST          | string | Mysql host. **Default: 127.0.0.1**                                                   |
+| SQL_PORT          | string | Mysql port. **Default: 3306**                                                        |
+| SQL_DATABASE_NAME | string | Generated database name. **Default: db**                                             |
 
 ### set up https using nginx
 
@@ -78,5 +92,3 @@ warded_for;
     └── web
         └── index.html  # html page
 ```
-
-
