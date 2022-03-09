@@ -54,7 +54,7 @@ server {
 
         # proxy to ShortURL
         location / {
-            proxy_pass https://127.0.0.1:8004;
+            proxy_pass https://127.0.0.1:8000;
 
          # necessary. we need header X-Forwarded-Proto to distinguish 
          # bewteen HTTPS and HTTP server
