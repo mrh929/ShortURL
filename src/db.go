@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"io/ioutil"
+	"strings"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -56,6 +57,8 @@ func urlSelect(s_key string) (r_url string, err error) {
 	}
 	err = rows.Err()
 	rows.Close()
+
+	r_url = strings.Replace(r_url, "%23", "#", -1) // fix: %23 cannot be recognized by chrome
 	return
 }
 
