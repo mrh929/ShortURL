@@ -43,11 +43,10 @@ func dbInit() (err error) {
 }
 
 func urlSelect(s_key string) (r_url string, err error) {
-	err = db.Ping()
+	rows, err := db.Query("SELECT r_url FROM urltable WHERE s_key = ?", s_key)
 	if err != nil {
 		return
 	}
-	rows, err := db.Query("SELECT r_url FROM urltable WHERE s_key = ?", s_key)
 
 	for rows.Next() {
 		err = rows.Scan(&r_url)
@@ -61,11 +60,10 @@ func urlSelect(s_key string) (r_url string, err error) {
 }
 
 func urlInsert(s_key string, r_url string) (err error) {
-	err = db.Ping()
+	rows, err := db.Query("INSERT INTO urltable VALUES(?, ?, null)", s_key, r_url)
 	if err != nil {
 		return
 	}
-	rows, err := db.Query("INSERT INTO urltable VALUES(?, ?, null)", s_key, r_url)
 	rows.Close()
 	return
 }
