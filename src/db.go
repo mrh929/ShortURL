@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"io/ioutil"
+	"strings"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -43,11 +44,10 @@ func dbInit() (err error) {
 }
 
 func urlSelect(s_key string) (r_url string, err error) {
-	err = db.Ping()
+	rows, err := db.Query("SELECT r_url FROM urltable WHERE s_key = ?", s_key)
 	if err != nil {
 		return
 	}
-	rows, err := db.Query("SELECT r_url FROM urltable WHERE s_key = ?", s_key)
 
 	for rows.Next() {
 		err = rows.Scan(&r_url)
@@ -57,15 +57,16 @@ func urlSelect(s_key string) (r_url string, err error) {
 	}
 	err = rows.Err()
 	rows.Close()
+
+	r_url = strings.Replace(r_url, "%23", "#", -1) // fix: %23 cannot be recognized by chrome
 	return
 }
 
 func urlInsert(s_key string, r_url string) (err error) {
-	err = db.Ping()
+	rows, err := db.Query("INSERT INTO urltable VALUES(?, ?, null)", s_key, r_url)
 	if err != nil {
 		return
 	}
-	rows, err := db.Query("INSERT INTO urltable VALUES(?, ?, null)", s_key, r_url)
 	rows.Close()
 	return
 }
