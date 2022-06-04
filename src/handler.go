@@ -4,16 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"path"
 
 	"github.com/gorilla/mux"
 )
-
-func homeHandler(w http.ResponseWriter, r *http.Request) { // index page
-	// fmt.Println("HomeHandler called!")
-	path := path.Dir("./web/index.html")
-	http.ServeFile(w, r, path)
-}
 
 func shortenHandler(w http.ResponseWriter, r *http.Request) { // handle shorten url requests
 	// fmt.Println("ShortenHandler called!")

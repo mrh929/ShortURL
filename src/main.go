@@ -28,9 +28,9 @@ func main() {
 
 	log.Info("Serving Short URLs...")
 	router := mux.NewRouter()
-	router.HandleFunc("/", homeHandler) // add handlers
 	router.HandleFunc("/shorten", shortenHandler)
-	router.HandleFunc("/{key}", urlHandler)
+	router.HandleFunc("/{key:[a-zA-Z0-9]{5}}", urlHandler)
+	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./web/")))
 
 	log.Fatal(http.ListenAndServe(fmt.Sprintf("%s:%s", SRV_HOST, SRV_PORT), router)) // start listening
 }
