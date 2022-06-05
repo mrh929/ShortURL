@@ -4,20 +4,42 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"path"
+	"text/template"
 
 	"github.com/gorilla/mux"
 )
 
-func homeHandler(w http.ResponseWriter, r *http.Request) { // index page
-	// fmt.Println("HomeHandler called!")
-	path := path.Dir("./web/index.html")
-	http.ServeFile(w, r, path)
+func successPageHandler(w http.ResponseWriter, r *http.Request) { // handle success page requests
+	type urlInfo struct {
+		ShortenURL string
+		RealURL    string
+	}
+
+	if err := r.ParseForm(); err != nil {
+		return
+	}
+	s_url := r.PostFormValue("shortenURL")
+	r_url := r.PostFormValue("realURL")
+
+	if s_url == "" || r_url == "" { // maybe add more check methods
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	tmpl, err := template.ParseFiles("./web/success.tmpl")
+	if err != nil {
+		fmt.Println("create template failed, err:", err)
+		return
+	}
+
+	info := urlInfo{
+		ShortenURL: s_url,
+		RealURL:    r_url,
+	}
+	tmpl.Execute(w, info)
 }
 
 func shortenHandler(w http.ResponseWriter, r *http.Request) { // handle shorten url requests
-	// fmt.Println("ShortenHandler called!")
-
 	if err := r.ParseForm(); err != nil {
 		return
 	}
@@ -29,8 +51,7 @@ func shortenHandler(w http.ResponseWriter, r *http.Request) { // handle shorten 
 		http.Error(w, "url or passwd cannot be empty", http.StatusBadRequest)
 		return
 	} else if passwd != SRV_PASSWD { // validate password
-		m["status"] = "failed"
-		m["url"] = ""
+		m["status"] = "1"
 		m["reason"] = "Invalid Password"
 		// fmt.Fprintf(w, "Invalid Password")
 		json, _ := json.Marshal(m)
@@ -41,8 +62,7 @@ func shortenHandler(w http.ResponseWriter, r *http.Request) { // handle shorten 
 	} else {
 		r_url, err := parseRawURL(url) // convert url to standard url
 		if err != nil {
-			m["status"] = "failed"
-			m["url"] = ""
+			m["status"] = "2"
 			m["reason"] = "Invalid URL"
 			// fmt.Fprintf(w, "Invalid URL")
 			json, _ := json.Marshal(m)
@@ -54,8 +74,7 @@ func shortenHandler(w http.ResponseWriter, r *http.Request) { // handle shorten 
 
 		s_key, needInsert, err := keyGenerate(r_url)
 		if err != nil {
-			m["status"] = "failed"
-			m["url"] = ""
+			m["status"] = "3"
 			m["reason"] = "Unknown error"
 			json, _ := json.Marshal(m)
 			w.Header().Set("Content-Type", "application/json")
@@ -68,8 +87,7 @@ func shortenHandler(w http.ResponseWriter, r *http.Request) { // handle shorten 
 		if needInsert { // need to insert key and url
 			err := urlInsert(s_key, r_url)
 			if err != nil {
-				m["status"] = "failed"
-				m["url"] = ""
+				m["status"] = "3"
 				m["reason"] = "Unknown error"
 				json, _ := json.Marshal(m)
 				w.Header().Set("Content-Type", "application/json")
@@ -96,8 +114,9 @@ func shortenHandler(w http.ResponseWriter, r *http.Request) { // handle shorten 
 			base_path = r.Host
 		}
 
-		m["url"] = fmt.Sprintf("%s://%s/%s", protocol, base_path, s_key)
-		m["status"] = "success"
+		m["shortenURL"] = fmt.Sprintf("%s://%s/%s", protocol, base_path, s_key)
+		m["realURL"] = r_url
+		m["status"] = "0"
 		m["reason"] = "success"
 		json, _ := json.Marshal(m)
 		w.Header().Set("Content-Type", "application/json")
@@ -111,8 +130,6 @@ func shortenHandler(w http.ResponseWriter, r *http.Request) { // handle shorten 
 }
 
 func urlHandler(w http.ResponseWriter, r *http.Request) { // handle url requets
-	// fmt.Println("URLHandler called!")
-
 	vars := mux.Vars(r)
 
 	if url, err := urlSelect(vars["key"]); url != "" {
