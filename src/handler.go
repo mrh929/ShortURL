@@ -4,13 +4,42 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"text/template"
 
 	"github.com/gorilla/mux"
 )
 
-func shortenHandler(w http.ResponseWriter, r *http.Request) { // handle shorten url requests
-	// fmt.Println("ShortenHandler called!")
+func successPageHandler(w http.ResponseWriter, r *http.Request) { // handle success page requests
+	type urlInfo struct {
+		ShortenURL string
+		RealURL    string
+	}
 
+	if err := r.ParseForm(); err != nil {
+		return
+	}
+	s_url := r.PostFormValue("shortenURL")
+	r_url := r.PostFormValue("realURL")
+
+	if s_url == "" || r_url == "" { // maybe add more check methods
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	tmpl, err := template.ParseFiles("./web/success.tmpl")
+	if err != nil {
+		fmt.Println("create template failed, err:", err)
+		return
+	}
+
+	info := urlInfo{
+		ShortenURL: s_url,
+		RealURL:    r_url,
+	}
+	tmpl.Execute(w, info)
+}
+
+func shortenHandler(w http.ResponseWriter, r *http.Request) { // handle shorten url requests
 	if err := r.ParseForm(); err != nil {
 		return
 	}
@@ -101,8 +130,6 @@ func shortenHandler(w http.ResponseWriter, r *http.Request) { // handle shorten 
 }
 
 func urlHandler(w http.ResponseWriter, r *http.Request) { // handle url requets
-	// fmt.Println("URLHandler called!")
-
 	vars := mux.Vars(r)
 
 	if url, err := urlSelect(vars["key"]); url != "" {

@@ -28,6 +28,7 @@ func main() {
 
 	log.Info("Serving Short URLs...")
 	router := mux.NewRouter()
+	router.HandleFunc("/success", successPageHandler)
 	router.HandleFunc("/shorten", shortenHandler)
 	router.HandleFunc("/{key:[a-zA-Z0-9]{5}}", urlHandler)
 	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./web/")))
