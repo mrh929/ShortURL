@@ -620,7 +620,7 @@
     <main>
         <section id="urlbox">
             <h1>Paste the URL to be shortened</h1>
-            <form id="form" method="post" action="/shorten">
+            <form id="form" method="post" action="./shorten">
                 <div id="formurl">
                     <input type="text" id="url" required="required" value="" name="u" placeholder="Enter the link here"
                         onclick="clear_error();" style="width:70%;float:left;outline:none;border-right:0">
@@ -658,7 +658,7 @@
             posting.done(function (data) {
                 if (data['status'] == '0') {
                     // make a fake form to use post method 
-                    var url = "/success",
+                    var url = "./success",
                         args = {
                             realURL: data['realURL'],
                             shortenURL: data['shortenURL']
